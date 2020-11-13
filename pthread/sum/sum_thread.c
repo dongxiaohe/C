@@ -5,9 +5,12 @@
 void *sum(void *arg)
 {
   char *textArg = (char *)arg;
-
   long long limit  = atoll(textArg);
-  printf("the argument is %lld  \n", limit);
+  long long sum = 0;
+  for (int i = 1; i <= limit; i++) {
+    sum += i;
+  }
+  printf("the argument is %lld  \n", sum);
 
   pthread_exit(0);
 }

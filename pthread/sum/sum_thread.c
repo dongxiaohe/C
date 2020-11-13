@@ -2,16 +2,19 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-long long total = 0;
+struct total_struct {
+  long long limit;
+  long long result;
+};
 
 void *sum(void *arg)
 {
-  char *textArg = (char *)arg;
-  long long limit  = atoll(textArg);
-  for (int i = 1; i <= limit; i++) {
-    total += i;
+  struct total_struct *total = (struct total_struct*) arg;
+  total->result = 0;
+  for (int i = 1; i <= total->limit; i++) {
+    total->result += i;
   }
-  printf("the argument is %lld  \n", total);
+  printf("the total sum to the argument is %lld  \n", total->result);
 
   pthread_exit(0);
 }
@@ -20,11 +23,14 @@ int main(int argc, char **argv)
 {
   int num = argc - 1;
   pthread_t tids[num]; 
+  struct total_struct total[num];
 
   for(int i = 0; i < num; i++) {
     pthread_attr_t attr;
     pthread_attr_init(&attr);
-    int status = pthread_create(&tids[i],  &attr, sum, argv[i + 1]);
+
+    total[i].limit = atoll(argv[i + 1]);
+    int status = pthread_create(&tids[i],  &attr, sum, &total[i]);
     printf("pthread_create status is %d \n", status);
   }
 

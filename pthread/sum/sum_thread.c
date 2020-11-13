@@ -21,6 +21,10 @@ void *sum(void *arg)
 
 int main(int argc, char **argv)
 {
+  if (argc < 2) {
+    printf("wrong usage, please provide num1, num2, num3 \n");
+    return;
+  }
   int num = argc - 1;
   pthread_t tids[num]; 
   struct total_struct total[num];
@@ -31,7 +35,9 @@ int main(int argc, char **argv)
 
     total[i].limit = atoll(argv[i + 1]);
     int status = pthread_create(&tids[i],  &attr, sum, &total[i]);
-    printf("pthread_create status is %d \n", status);
+    if (status != 0) {
+      printf("something went wrong, pthread_create status is %d \n", status);
+    }
   }
 
   for(int i = 0; i < num; i++) {

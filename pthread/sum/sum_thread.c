@@ -17,15 +17,19 @@ void *sum(void *arg)
 
 int main(int argc, char **argv)
 {
-  pthread_t tid; 
-  pthread_attr_t attr;
-  pthread_attr_init(&attr);
+  int num = argc - 1;
+  pthread_t tids[num]; 
 
-  int status = pthread_create(&tid,  &attr, sum, argv[1]);
+  for(int i = 0; i < num; i++) {
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    int status = pthread_create(&tids[i],  &attr, sum, argv[i + 1]);
+    printf("pthread_create status is %d \n", status);
+  }
 
-  printf("pthread_create status is %d \n", status);
-  
-  pthread_join(tid, NULL);
+  for(int i = 0; i < num; i++) {
+    pthread_join(tids[i], NULL);
+  }
 
   return 0;
 }

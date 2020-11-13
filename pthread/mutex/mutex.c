@@ -2,11 +2,14 @@
 #include <pthread.h>
 
 long long sum = 0;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 void* pthread_func(void* args)
 {
   int increment = *(int *) args;
   for(int i = 0; i < 5000000; i ++) {
+    pthread_mutex_lock(&mutex);
     sum += increment;
+    pthread_mutex_unlock(&mutex);
   }
   pthread_exit(NULL);
 }

@@ -1,10 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 
 void *sum(void *arg)
 {
   char *textArg = (char *)arg;
-  printf("the argument is %s \n", textArg);
+
+  long long limit  = atoll(textArg);
+  printf("the argument is %lld  \n", limit);
 
   pthread_exit(0);
 }

@@ -15,12 +15,13 @@ int main(int argc, char** argv)
   pthread_t pid1;
   int increment1 = 1;
   pthread_create(&pid1, NULL, pthread_func, &increment1);
-  pthread_join(pid1, NULL); 
   
   pthread_t pid2;
   int increment2 = -1;
   pthread_create(&pid2, NULL, pthread_func, &increment2);
+
   pthread_join(pid1, NULL); 
+  pthread_join(pid2, NULL); 
   
   printf("the sum is %lld \n", sum);
 }

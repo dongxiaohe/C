@@ -2,15 +2,16 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+long long total = 0;
+
 void *sum(void *arg)
 {
   char *textArg = (char *)arg;
   long long limit  = atoll(textArg);
-  long long sum = 0;
   for (int i = 1; i <= limit; i++) {
-    sum += i;
+    total += i;
   }
-  printf("the argument is %lld  \n", sum);
+  printf("the argument is %lld  \n", total);
 
   pthread_exit(0);
 }

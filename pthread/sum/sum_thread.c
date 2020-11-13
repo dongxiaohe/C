@@ -14,16 +14,15 @@ void *sum(void *arg)
   for (int i = 1; i <= total->limit; i++) {
     total->result += i;
   }
-  printf("the total sum to the argument is %lld  \n", total->result);
 
-  pthread_exit(0);
+  pthread_exit(&total->result);
 }
 
 int main(int argc, char **argv)
 {
   if (argc < 2) {
     printf("wrong usage, please provide num1, num2, num3 \n");
-    return;
+    exit(-1);
   }
   int num = argc - 1;
   pthread_t tids[num]; 
@@ -41,7 +40,9 @@ int main(int argc, char **argv)
   }
 
   for(int i = 0; i < num; i++) {
-    pthread_join(tids[i], NULL);
+    long long *result;
+    pthread_join(tids[i], (void **)&result);
+    printf("thread %d the total sum to the argument is %lld  \n", i, *result);
   }
 
   return 0;
